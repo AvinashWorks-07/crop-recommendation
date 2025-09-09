@@ -1,0 +1,28 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+import joblib
+
+# Dataset load
+df = pd.read_csv("Crop_recommendation.csv")
+X = df.drop('label', axis=1)
+y = df['label']
+
+# Encode target
+le = LabelEncoder()
+y_encoded = le.fit_transform(y)
+
+# Scale features using previously saved scaler
+scaler = joblib.load("scaler.joblib")
+X_scaled = scaler.transform(X)
+
+# Train Random Forest
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_scaled, y_encoded)
+
+# Save model and label encoder using joblib
+joblib.dump(rf, "crop_model.joblib")
+joblib.dump(le, "label_encoder.joblib")
+
+print("✅ crop_model.joblib and label_encoder.joblib created successfully")
