@@ -1,0 +1,15 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+import joblib
+
+# Dataset load
+df = pd.read_csv("Crop_recommendation.csv")
+y = df['label']  # Target column
+
+# Fit LabelEncoder
+le = LabelEncoder()
+y_encoded = le.fit_transform(y)
+
+# Save LabelEncoder
+joblib.dump(le, "label_encoder.joblib")
+print("✅ label_encoder.joblib created successfully")
